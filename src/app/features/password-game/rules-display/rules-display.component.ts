@@ -3,7 +3,6 @@ import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Rule } from '../../../models/rule.model';
 import { PasswordGameService } from '../../../services/password-game.service';
-import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-rules-display',
@@ -52,12 +51,12 @@ export class RulesDisplayComponent implements OnInit {
     return rule.level <= currentLevel;
   }
 
-  isRuleValid(rule: Rule, password: string): boolean {
+  isRuleValid(rule: Rule, password: string): boolean | Promise<boolean> {
     if (!rule.isActive) return false;
     return rule.validator(password);
   }
 
-  trackByRule(index: number, rule: Rule) {
+  trackByRule(_: number, rule: Rule) {
     return rule.id;
   }
 }

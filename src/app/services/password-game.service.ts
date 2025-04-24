@@ -20,36 +20,42 @@ export class PasswordGameService {
     this.initializeRules();
   }
 
-  updatePassword(password: string): void {
+  async updatePassword(password: string): Promise<void> {
     if (password.length > 0 && !this.hasStartedTypingSource.value) {
       this.hasStartedTypingSource.next(true);
     }
 
     this.passwordSource.next(password);
-    this.checkRules(password);
+    await this.checkRules(password);
   }
 
-  private checkRules(password: string): void {
+  private async checkRules(password: string): Promise<void> {
     const currentLevel = this.currentLevelSource.value;
     const rules = this.rulesSource.value;
+    const maxLevel = this.getMaxLevel();
 
-    const { updatedRules, allCurrentLevelRulesValid } = this.ruleEngine.validate(password, rules, currentLevel);
+    const { updatedRules, allCurrentLevelRulesValid } =
+      await this.ruleEngine.validateAsync(password, rules, currentLevel);
 
     this.rulesSource.next(updatedRules);
 
-    if (allCurrentLevelRulesValid && currentLevel === this.currentLevelSource.value) {
-      this.activateNextLevel(password);
+    if (allCurrentLevelRulesValid && currentLevel === this.currentLevelSource.value && currentLevel < maxLevel) {
+      await this.activateNextLevel(password);
     }
   }
 
-  private activateNextLevel(password: string): void {
+  private getMaxLevel(): number {
+    const rules = this.rulesSource.value;
+    return Math.max(...rules.map(rule => rule.level));
+  }
+
+  private async activateNextLevel(password: string): Promise<void> {
     const nextLevel = this.currentLevelSource.value + 1;
     const updatedRules = this.ruleEngine.activateNextLevel(this.rulesSource.value, nextLevel);
 
     this.currentLevelSource.next(nextLevel);
     this.rulesSource.next(updatedRules);
-
-    this.checkRules(password);
+    await this.checkRules(password);
   }
 
   resetGame(): void {
@@ -60,7 +66,8 @@ export class PasswordGameService {
   }
 
   private initializeRules(): void {
-    const clonedRules = defaultRules.map(r => ({ ...r }));
+    const clonedRules = defaultRules.map((r: Rule) => ({ ...r }));
+
     this.rulesSource.next(clonedRules);
   }
 }

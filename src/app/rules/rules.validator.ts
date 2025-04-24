@@ -16,7 +16,7 @@ export function hasSpecialChar(password: string): boolean {
 
 export function numbersSum69(password: string): boolean {
   const numbers = password.match(/\d/g);
-  return numbers ? numbers.reduce((sum, d) => sum + +d, 0) === 69 : false;
+  return numbers ? numbers.reduce((sum, d) => sum + +d, 0) === 25 : false;
 }
 
 export function includesChemicalElement(password: string): boolean {
@@ -39,3 +39,6 @@ export function includesSolutionToEquation(password: string): boolean {
   return password.includes('23');
 }
 
+export function includesGithubUsername(password: string): boolean {
+  return /JoDemVel/i.test(password);
+}

@@ -9,6 +9,7 @@ import {
   hasHappyEmoji,
   includesCurrentMonth,
   includesSolutionToEquation,
+  includesGithubUsername,
 } from './rules.validator';
 
 export const defaultRules: Rule[] = [
@@ -43,7 +44,7 @@ export const defaultRules: Rule[] = [
   {
     id: 5,
     level: 5,
-    description: 'The digits in your password must add up to 69',
+    description: 'The digits in your password must add up to 25',
     validator: numbersSum69,
     isActive: false,
   },
@@ -77,4 +78,12 @@ export const defaultRules: Rule[] = [
     validator: includesSolutionToEquation,
     isActive: false,
   },
+  {
+    id: 10,
+    level: 10,
+    description: "Your password must have the github username where the repository is hosted.",
+    validator: includesGithubUsername,
+    isActive: false,
+  },
+
 ];

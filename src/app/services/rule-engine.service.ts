@@ -3,21 +3,24 @@ import { Rule } from '../models/rule.model';
 
 @Injectable({ providedIn: 'root' })
 export class RuleEngine {
-  validate(password: string, rules: Rule[], currentLevel: number): {
+  async validateAsync(password: string, rules: Rule[], currentLevel: number): Promise<{
     updatedRules: Rule[],
     allCurrentLevelRulesValid: boolean
-  } {
+  }> {
     let allCurrentLevelRulesValid = true;
-    const updatedRules = rules.map(rule => {
-      if (rule.level <= currentLevel) {
-        const isValid = rule.validator(password);
-        if (rule.level === currentLevel && !isValid) {
-          allCurrentLevelRulesValid = false;
+
+    const updatedRules = await Promise.all(
+      rules.map(async rule => {
+        if (rule.level <= currentLevel) {
+          const isValid = await rule.validator(password);
+          if (rule.level === currentLevel && !isValid) {
+            allCurrentLevelRulesValid = false;
+          }
+          return { ...rule };
         }
-        return { ...rule };
-      }
-      return rule;
-    });
+        return rule;
+      })
+    );
 
     return { updatedRules, allCurrentLevelRulesValid };
   }
