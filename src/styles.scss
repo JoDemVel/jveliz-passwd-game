@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Fira Code', monospace;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  font-family: inherit;
+}
