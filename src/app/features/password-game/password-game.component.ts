@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./password-game.component.scss']
 })
 export class PasswordGameComponent {
-  title = 'The JVeliz Password Game';
+  title = 'The JVeliz Passwd Game';
 }

@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'jveliz-password-game',
+    redirectTo: 'jveliz-passwd-game',
     pathMatch: 'full'
   },
   {
-    path: 'jveliz-password-game',
+    path: 'jveliz-passwd-game',
     loadChildren: () => import('./features/password-game/password-game.module').then(m => m.PasswordGameModule)
   }
 ];
