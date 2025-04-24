@@ -1,0 +1,23 @@
+<div class="rules-container" *ngIf="hasStartedTyping$ | async">
+  <h2>Rules</h2>
+  <div class="rules-list">
+    <ng-container *ngFor="let rule of orderedRules$ | async; trackBy: trackByRule">
+      <div *ngIf="isRuleVisible(rule, (currentLevel$ | async) || 0)"
+        class="rule-item"
+        [ngClass]="{
+          'valid': isRuleValid(rule, (password$ | async) || ''),
+          'active': rule.isActive
+        }">
+        <div class="rule-number">{{ rule.id }}</div>
+        <div class="rule-content">
+          <div class="rule-description">{{ rule.description }}</div>
+          <div *ngIf="rule.hint" class="rule-hint">{{ rule.hint }}</div>
+        </div>
+        <div class="rule-status">
+          <span *ngIf="isRuleValid(rule, (password$ | async) || '')">✅</span>
+          <span *ngIf="!isRuleValid(rule, (password$ | async) || '') && rule.isActive">❌</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
